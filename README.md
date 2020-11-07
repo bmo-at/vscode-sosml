@@ -3,7 +3,7 @@
 This extension allows you to interpret your SML code with the SOSML interpreter.
 It basically recreates the functionality of the [SOSML editor](https://sosml.org/editor) right in Visual Studio Code, for your convenience.
 
-I created this becuse I don't like editing code in my browser and I like to keep my files on my own folders instead of my browser cache.
+I created this becuse I don't like editing code in my browser and I like to keep my files in my own folders instead of my browser cache.
 
 ## Features
 
@@ -32,7 +32,7 @@ When installing this extension, you should be prompted to also install [vscode-b
 
 ## Known Issues
 
-None right now :)
+* Comments are not possible as of now and will lead to an evalutation error [#1](https://github.com/bmo-at/vscode-sosml/issues/1)
 
 ## Release Notes
 
