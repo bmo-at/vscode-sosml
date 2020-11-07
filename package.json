@@ -47,5 +47,6 @@
 	},
 	"extensionDependencies": [
 		"stonebuddha.vscode-better-sml"
-	]
+	],
+	"publisher": "bmo-at"
 }
