@@ -48,5 +48,8 @@
 	"extensionDependencies": [
 		"stonebuddha.vscode-better-sml"
 	],
-	"publisher": "bmo-at"
+	"publisher": "bmo-at",
+	"repository": {
+		"url": "https://github.com/bmo-at/vscode-sosml"
+	}
 }
