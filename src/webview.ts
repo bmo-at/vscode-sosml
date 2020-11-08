@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import * as CSS from 'csstype';
 
 import { getFirstState, interpret, InterpreterOptions, PrintOptions, Errors, State } from '@sosml/interpreter';
 
@@ -90,14 +89,16 @@ export class SMLView {
 
         let smlResult = this._smlCode.split(';').map((program) => this._evaluateProgram(program + ';'));
 
-        let styleSheet = `<style> code { font-family: monospace; color: black; font-weight: 600; } div { padding: 1px; margin: 2px; } .div-0 { background-color: deepskyblue; } .div-1 { background-color: lawngreen; } .div-2 { background-color: teal; } .div-3 { background-color: yellowgreen; } .div-4 { background-color: darkviolet; } </style>`;
+        let styleSheet = `<style> code { font-family: monospace; color: black; font-weight: 600; } div { border-radius: 5px; border: 1px solid grey; padding: 3px; margin: 3px; } .div-0 { background-color: deepskyblue; } .div-1 { background-color: lawngreen; } .div-2 { background-color: teal; } .div-3 { background-color: yellowgreen; } .div-4 { background-color: darkviolet; } .div-error { background-color: black; color: crimson;} </style>`;
 
         return styleSheet +
             '<code>' +
             smlResult
                 .filter(x => x !== '')
                 .map((program, index) => {
-                    return `<div class="div-${index % 5}" >` + program
+                    const start = program.startsWith('There was a problem with your code:') ?
+                        `<div class="div-error">` : `<div class="div-${index % 5}">`;
+                    return start + program
                         .split(';')
                         .filter(x => x !== '\n')
                         .map((x) => { if (!(x.startsWith('There was a problem with your code:'))) { return x + ';'; } else { return x; } })
