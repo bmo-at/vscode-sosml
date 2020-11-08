@@ -10,6 +10,10 @@ All notable changes to the "vscode-sosml" extension will be documented in this f
 - Every program gets a background color out of a set of five (deepskyblue, lawngreen, teal, yellowgreen, darkviolet) to make it easily distinguishable from the others
 - Errors are are written in red on a black background for maximum errorness
 
+### Fixed
+
+- Comments used to create evaluation errors. This is not the case any more!
+
 ## [1.0.0] - 11/7/2020
 
 - Initial release
