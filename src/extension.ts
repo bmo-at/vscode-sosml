@@ -10,13 +10,13 @@ export function activate(context: vscode.ExtensionContext) {
 			vscode.window.showErrorMessage('Open File is not an SML file');
 			return;
 		}
-		SMLView.createOrShow(context.extensionUri, textEditor.document.getText());
+		SMLView.createOrShow(textEditor.document);
 	});
 
 	let onChangeSMLFile = vscode.workspace.onDidSaveTextDocument((document) => {
 		if (document.languageId !== 'sml') { return; }
 		if (!SMLView.currentView) { return; }
-		SMLView.createOrShow(context.extensionUri, document.getText());
+		SMLView.createOrShow(document);
 	});
 
 	context.subscriptions.push(interpretCommand, onChangeSMLFile);

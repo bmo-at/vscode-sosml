@@ -1,24 +1,23 @@
 import * as vscode from 'vscode';
+import * as CSS from 'csstype';
 
 import { getFirstState, interpret, InterpreterOptions, PrintOptions, Errors, State } from '@sosml/interpreter';
 
 export class SMLView {
     public static currentView: SMLView | undefined;
 
-    public static readonly viewType = 'vscode-sosml';
-
     private _smlCode: string = '';
-    private _interpreterState: State = getFirstState();
     private readonly _interpreterOptions: InterpreterOptions = {
-        allowSuccessorML: true,
+        allowSuccessorML: false,
         allowVector: true,
         disableElaboration: false,
         disableEvaluation: false,
-        strictMode: false,
+        strictMode: true,
         allowUnicode: false,
         allowUnicodeTypeVariables: false,
-        allowCommentToken: true
+        allowCommentToken: false
     };
+    private _interpreterState: State = getFirstState(undefined, this._interpreterOptions);
     private _printOptions: PrintOptions = {
         boldText: ((text: string) => text.bold()),
         italicText: ((text: string) => text.italics()),
@@ -26,33 +25,36 @@ export class SMLView {
         stopId: this._interpreterState.id + 1
     };
     private readonly _panel: vscode.WebviewPanel;
-    private readonly _extensionUri: vscode.Uri;
     private _disposables: vscode.Disposable[] = [];
 
-    public static createOrShow(extensionUri: vscode.Uri, smlCode: string) {
+    public static createOrShow(smlDocument: vscode.TextDocument) {
+
         if (SMLView.currentView) {
-            SMLView.currentView._smlCode = smlCode;
+            SMLView.currentView._smlCode = smlDocument.getText();
             SMLView.currentView._update();
             return;
         }
 
         const panel = vscode.window.createWebviewPanel(
-            SMLView.viewType,
-            'Interpreter Result',
-            vscode.ViewColumn.Beside,
-            { enableFindWidget: true }
+            'sosml.interpreterResult',
+            `Interpreter Result - ${(smlDocument.fileName
+                .split('/')
+                .pop() || '')
+                .split('.')
+                .filter((text) => text !== 'sml')
+                .join('.')}`,
+            vscode.ViewColumn.Beside
         );
 
-        SMLView.currentView = new SMLView(panel, extensionUri, smlCode);
+        SMLView.currentView = new SMLView(panel, smlDocument.getText());
     }
 
     public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri, smlCode: string) {
-        SMLView.currentView = new SMLView(panel, extensionUri, smlCode);
+        SMLView.currentView = new SMLView(panel, smlCode);
     }
 
-    private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri, smlCode: string) {
+    private constructor(panel: vscode.WebviewPanel, smlCode: string) {
         this._panel = panel;
-        this._extensionUri = extensionUri;
         this._smlCode = smlCode;
 
         this._update();
@@ -86,61 +88,49 @@ export class SMLView {
 
     private _getHtmlForWebview() {
 
-        let smlResult = (() => {
-            try {
-                let out = '';
-                let result = interpret(this._smlCode, this._interpreterState, this._interpreterOptions);
+        let smlResult = this._smlCode.split(';').map((program) => this._evaluateProgram(program + ';'));
 
-                if (result.evaluationErrored) {
-                    out += 'There was a problem with your code:\n'
-                        + '\x1b[31;40;1m' + result.error + '\x1b[39;49;0m\n';
-                } else {
-                    out += result.state.toString(this._printOptions);
-                    this._printOptions.stopId = result.state.id + 1;
-                    this._interpreterState = result.state;
-                }
+        let styleSheet = `<style> code { font-family: monospace; color: black; font-weight: 600; } div { padding: 1px; margin: 2px; } .div-0 { background-color: deepskyblue; } .div-1 { background-color: lawngreen; } .div-2 { background-color: teal; } .div-3 { background-color: yellowgreen; } .div-4 { background-color: darkviolet; } </style>`;
 
-                if (result.warnings !== undefined) {
-                    for (let i = 0; i < result.warnings.length; ++i) {
-                        if (result.warnings[i].type >= -1) {
-                            out += 'Attention: ' + result.warnings[i].message;
-                        } else {
-                            out += 'Message: ' + result.warnings[i].message;
-                        }
-                    }
-                }
+        return styleSheet +
+            '<code>' +
+            smlResult
+                .filter(x => x !== '')
+                .map((program, index) => {
+                    return `<div class="div-${index % 5}" >` + program
+                        .split(';')
+                        .filter(x => x !== '\n')
+                        .map((x) => { if (!(x.startsWith('There was a problem with your code:'))) { return x + ';'; } else { return x; } })
+                        .reduce((prev, current) => { return prev + current + '</p>'; }, '<p>')
+                        .replace(/\n/g, '')
+                        .trim() +
+                        '</div>';
+                })
+                .join('\n') +
+            '</code>';
+    }
 
-                return out;
+    private _evaluateProgram(smlProgram: string) {
+        try {
+            let interpreterResult = interpret(smlProgram, this._interpreterState, this._interpreterOptions);
 
-            } catch (e) {
-                if (!(e instanceof Errors.IncompleteError)) {
-                    return `There was a problem with your code: ${e}`;
-                } else {
-                    return 'unknown error';
-                }
+            return interpreterResult.evaluationErrored ? (
+                `There was a problem with your code: ${interpreterResult.error}`
+                + interpreterResult.warnings
+                    .map((warning) => { return (warning.type >= -1) ? `Attention: ${warning.message}` : `Message: ${warning.message}`; })
+                    .reduce((acc, val) => `${acc}\n${val}`)
+            ) : ((() => {
+                let state = interpreterResult.state.toString(this._printOptions);
+                this._printOptions.stopId = interpreterResult.state.id + 1;
+                this._interpreterState = interpreterResult.state;
+                return state;
+            })());
+        } catch (e) {
+            if (!(e instanceof Errors.IncompleteError)) {
+                return `There was a problem with your code: ${e}`;
+            } else {
+                return 'unknown error';
             }
-        })();
-
-        let styleSheet = `<style>
-        code {
-            font-family: monospace;
-            color: #29D398
         }
-        </style>`;
-
-        return styleSheet + '<p><code>' + smlResult
-            .replace(/\n/g, '')
-            .trim()
-            .split('; ')
-            .map((val) => val.trim())
-            .map((val) => {
-                if (!val.endsWith(';')) {
-                    return val + ';';
-                }
-                else {
-                    return val;
-                }
-            })
-            .join('</code></p><p><code>') + '</code></p>';
     }
 }
