@@ -5,6 +5,8 @@ It basically recreates the functionality of the [SOSML editor](https://sosml.org
 
 I created this becuse I don't like editing code in my browser and I like to keep my files in my own folders instead of my browser cache.
 
+![Screenshot](https://github.com/bmo-at/vscode-sosml/blob/master/static/screenshots/helloworld.png?raw=true)
+
 ## Features
 
 It is currently still a work in progress, so more features are coming.
