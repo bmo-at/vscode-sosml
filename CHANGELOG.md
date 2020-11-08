@@ -1,4 +1,4 @@
-# Change Log
+# Changelog
 
 All notable changes to the "vscode-sosml" extension will be documented in this file.
 
