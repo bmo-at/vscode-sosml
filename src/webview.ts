@@ -5,7 +5,6 @@ import { getFirstState, interpret, InterpreterOptions, PrintOptions, Errors, Sta
 export class SMLView {
     public static currentView: SMLView | undefined;
 
-    private _smlCode: string = '';
     private readonly _interpreterOptions: InterpreterOptions = {
         allowSuccessorML: false,
         allowVector: true,
@@ -23,20 +22,21 @@ export class SMLView {
         showTypeVariablesAsUnicode: true,
         stopId: this._interpreterState.id + 1
     };
+    
+    private _document: vscode.TextDocument;
     private readonly _panel: vscode.WebviewPanel;
     private _disposables: vscode.Disposable[] = [];
 
-    public static createOrShow(smlDocument: vscode.TextDocument) {
+    public static createOrShow(document: vscode.TextDocument) {
 
         if (SMLView.currentView) {
-            SMLView.currentView._smlCode = smlDocument.getText();
             SMLView.currentView._update();
             return;
         }
 
         const panel = vscode.window.createWebviewPanel(
             'sosml.interpreterResult',
-            `Interpreter Result - ${(smlDocument.fileName
+            `Interpreter Result - ${(document.fileName
                 .split('/')
                 .pop() || '')
                 .split('.')
@@ -45,32 +45,16 @@ export class SMLView {
             vscode.ViewColumn.Beside
         );
 
-        SMLView.currentView = new SMLView(panel, smlDocument.getText());
+        SMLView.currentView = new SMLView(panel, document);
     }
 
-    public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri, smlCode: string) {
-        SMLView.currentView = new SMLView(panel, smlCode);
-    }
+    public isCurrent = (document: vscode.TextDocument) => document === this._document;
 
-    private constructor(panel: vscode.WebviewPanel, smlCode: string) {
+    private constructor(panel: vscode.WebviewPanel, document: vscode.TextDocument) {
         this._panel = panel;
-        this._smlCode = smlCode;
-
+        this._document = document;
         this._update();
-
         this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
-
-        this._panel.webview.onDidReceiveMessage(
-            message => {
-                switch (message.command) {
-                    case 'alert':
-                        vscode.window.showErrorMessage(message.text);
-                        return;
-                }
-            },
-            null,
-            this._disposables
-        );
     }
 
     public dispose() {
@@ -82,12 +66,12 @@ export class SMLView {
     }
 
     private _update() {
-        this._panel.webview.html = this._getHtmlForWebview();
+        this._panel.webview.html = this._generateHTML(this._document.getText());
     }
 
-    private _getHtmlForWebview() {
+    private _generateHTML(smlCode: string) {
 
-        let smlResult = this._smlCode.split(';').map((program) => this._evaluateProgram(program + ';'));
+        let smlResult = smlCode.split(';').map((program) => this._evaluateProgram(program + ';'));
 
         let styleSheet = `<style> code { font-family: monospace; color: black; font-weight: 600; } div { border-radius: 5px; border: 1px solid grey; padding: 3px; margin: 3px; } .div-0 { background-color: deepskyblue; } .div-1 { background-color: lawngreen; } .div-2 { background-color: teal; } .div-3 { background-color: yellowgreen; } .div-4 { background-color: darkviolet; } .div-error { background-color: black; color: crimson;} </style>`;
 

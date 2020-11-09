@@ -15,8 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	let onChangeSMLFile = vscode.workspace.onDidSaveTextDocument((document) => {
 		if (document.languageId !== 'sml') { return; }
-		if (!SMLView.currentView) { return; }
-		SMLView.createOrShow(document);
+		if (SMLView.currentView?.isCurrent(document)) { SMLView.createOrShow(document); }
 	});
 
 	context.subscriptions.push(interpretCommand, onChangeSMLFile);
