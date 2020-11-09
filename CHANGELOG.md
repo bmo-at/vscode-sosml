@@ -2,6 +2,12 @@
 
 All notable changes to the "vscode-sosml" extension will be documented in this file.
 
+## [1.1.1] - 11/9/2020
+
+### Fixed
+
+- It was previously possible to open two interpreter windows leading to hijinx involving mixed up files. Such malarky is now avoided.
+
 ## [1.1.0] - 11/8/2020
 
 ### Added
