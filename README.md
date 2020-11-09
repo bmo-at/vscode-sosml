@@ -40,7 +40,7 @@ When installing this extension, you should be prompted to also install [vscode-b
 
 ### 1.1.1
 
-[Changelog]((https://github.com/bmo-at/vscode-sosml/blob/master/CHANGELOG.md#111---1192020)
+[Changelog](https://github.com/bmo-at/vscode-sosml/blob/master/CHANGELOG.md#111---1192020)
 
 ### 1.1.0
 
