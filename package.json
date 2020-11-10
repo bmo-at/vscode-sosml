@@ -2,7 +2,7 @@
 	"name": "vscode-sosml",
 	"displayName": "vscode-sosml",
 	"description": "Run SOSML in Visual Studio Code",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"engines": {
 		"vscode": "^1.50.0"
 	},
@@ -10,7 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onStartupFinished"
+		"onLanguage:sml"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -18,6 +18,12 @@
 			{
 				"command": "vscode-sosml.interpret",
 				"title": "Open a SOSML interpreter for the current file"
+			}
+		],
+		"snippets": [
+			{
+				"language": "sml",
+				"path": "static/snippets/sml.json"
 			}
 		]
 	},
@@ -51,5 +57,6 @@
 	"publisher": "bmo-at",
 	"repository": {
 		"url": "https://github.com/bmo-at/vscode-sosml"
-	}
+	},
+	"icon": "static/logo/logo.png"
 }

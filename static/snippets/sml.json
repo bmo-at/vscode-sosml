@@ -1,0 +1,371 @@
+{
+	"Anonymous function": {
+		"prefix": "anon_func",
+		"description": "An anonymous function declaration.",
+		"body": "(fn (${1:parameters}) => ${0:function_body})"
+	},
+	"Type declaration (function)": {
+		"prefix": "type.function",
+		"description": [
+			"Type declaration of",
+			"a function."
+		],
+		"body": "(${1:function_name}: (${2:input_args}) -> (${0:return_type}))"
+	},
+	"String.^": {
+		"prefix": "String.^",
+		"description": [
+			"string * string -> string",
+			"\n",
+			"Concatenates two strings together",
+			"and returns the result.",
+			"\n",
+			"String.^(\"foo\", \"bar\") => \"foobar\"",
+			"(\"foo\" ^ \"bar\") => \"foobar\"",
+			"\n"
+		],
+		"body": "(${1:first_string} ^ ${0:second_string})"
+	},
+	"String.^.full": {
+		"prefix": "String.^.full",
+		"description": [
+			"string * string -> string",
+			"\n",
+			"Concatenates two strings together",
+			"and returns the result.",
+			"\n",
+			"String.^(\"foo\", \"bar\") => \"foobar\"",
+			"(\"foo\" ^ \"bar\") => \"foobar\"",
+			"\n"
+		],
+		"body": "String.^(${1:first_string}, ${0:second_string})"
+	},
+	"String.concat": {
+		"prefix": "String.concat",
+		"description": [
+			"string list -> string",
+			"\n",
+			"Concatenates a list of strings",
+			"into a single string.",
+			"\n",
+			"String.concat([\"foo\", \"bar\"])",
+			"=> \"foobar\"",
+			"\n"
+		],
+		"body": "String.concat(${0:string_list})"
+	},
+	"String.explode": {
+		"prefix": "String.explode",
+		"description": [
+			"string -> char list",
+			"\n",
+			"Explodes a string into a list",
+			"of characters that it is made",
+			"up of.",
+			"\n",
+			"String.explode(\"foobar\")",
+			"=> [#\"f\", #\"o\", #\"o\",  #\"b\", #\"a\", #\"r\",]",
+			"\n"
+		],
+		"body": "String.explode(${0:string})"
+	},
+	"String.implode": {
+		"prefix": "String.implode",
+		"description": [
+			"char list -> string",
+			"\n",
+			"Implodes a list of characters",
+			"into a string made up of all",
+			"those characters.",
+			"\n",
+			"String.implode([#\"f\", #\"o\", #\"o\",  #\"b\", #\"a\", #\"r\",])",
+			"=> \"foobar\"",
+			"\n"
+		],
+		"body": "String.implode(${0:char_list})"
+	},
+	"String.size": {
+		"prefix": "String.size",
+		"description": [
+			"string -> int",
+			"\n",
+			"Returns the number of characters",
+			"in a given string.",
+			"\n",
+			"String.size(\"foo bar\") => 7",
+			"\n"
+		],
+		"body": "String.size(${0:string})"
+	},
+	"String.str": {
+		"prefix": "String.str",
+		"description": [
+			"char -> string",
+			"\n",
+			"For a given character returns",
+			"a string consisting of just",
+			"that character.",
+			"\n",
+			"String.str(#\"f\") => \"f\"",
+			"\n"
+		],
+		"body": "String.str(${0:char})"
+	},
+	"String.substring": {
+		"prefix": "String.substring",
+		"description": [
+			"(string * int * int) -> string",
+			"\n",
+			"Return a substring of string",
+			"starting at start (indexing",
+			"starts with 0!) and ends at",
+			"end.",
+			"\n",
+			"String.substring(\"string\", 0, 3)",
+			"=> \"str\"",
+			"\n"
+		],
+		"body": "String.substring(${1:string}, ${2:start}, ${0:end})"
+	},
+	"Real.ceil": {
+		"prefix": "Real.ceil",
+		"description": [
+			"real -> int",
+			"\n",
+			"Casts a real to the next",
+			"largest integer.",
+			"\n",
+			"Real.ceil(3.6) => 4",
+			"\n"
+		],
+		"body": "Real.ceil(${0:real})"
+	},
+	"Real.floor": {
+		"prefix": "Real.floor",
+		"description": [
+			"real -> int",
+			"\n",
+			"Casts a real to the next",
+			"smallest integer.",
+			"\n",
+			"Real.floor(3.6) => 3",
+			"\n"
+		],
+		"body": "Real.floor(${0:real})"
+	},
+	"Real.fromInt": {
+		"prefix": "Real.fromInt",
+		"description": [
+			"int -> real",
+			"\n",
+			"Constructs a real from",
+			"an integer",
+			"\n",
+			"Real.fromInt(3) => 3.0",
+			"\n"
+		],
+		"body": "Real.fromInt(${0:int})"
+	},
+	"Real.round": {
+		"prefix": "Real.round",
+		"description": [
+			"real -> int",
+			"\n",
+			"Returns a rounded integer.",
+			"Threshhold is 0.5",
+			"\n",
+			"Real.round(3.5) => 3",
+			"Real.round(3.51) => 4",
+			"\n"
+		],
+		"body": "Real.round(${0:real})"
+	},
+	"Real.trunc": {
+		"prefix": "Real.trunc",
+		"description": [
+			"real -> int",
+			"\n",
+			"Returns an integer that",
+			"is always rounded down.",
+			"\n",
+			"Real.round(3.4) => 3",
+			"Real.round(3.99) => 3",
+			"\n"
+		],
+		"body": "Real.trunc(${0:real})"
+	},
+	"Real.div": {
+		"prefix": "Real.div",
+		"description": [
+			"(real * real) -> real",
+			"\n",
+			"Returns the quotient of",
+			"the two given reals.",
+			"dividend / divisor",
+			"\n",
+			"3.0 / 2.0 => 1.5",
+			"\n"
+		],
+		"body": "${1:dividend} / ${0:divisor}"
+	},
+	"List.@": {
+		"prefix": "List.@",
+		"description": [
+			"(α list * α list) -> α list",
+			"\n",
+			"Append two lists together.",
+			"\n",
+			"([1, 2, 3] @ [4, 5, 6])",
+			"=> [1, 2, 3, 4, 5, 6]",
+			"\n"
+		],
+		"body": "(${1:first_list} @ ${0:second_list})"
+	},
+	"List.@.full": {
+		"prefix": "List.@.full",
+		"description": [
+			"(α list * α list) -> α list",
+			"\n",
+			"Append two lists together.",
+			"\n",
+			"List.@([1, 2, 3], [4, 5, 6])",
+			"=> [1, 2, 3, 4, 5, 6]",
+			"\n"
+		],
+		"body": "List.@(${1:first_list}, ${0:second_list})"
+	},
+	"List.app": {
+		"prefix": "List.app",
+		"description": [
+			"(α -> unit) -> α list -> unit",
+			"\n",
+			"Applies the given function to",
+			"the list without returning anything.",
+			"\n",
+			"fun callback x = print(x)",
+			"List.app callback [\"foo\", \"bar\"]",
+			"=> unit",
+			"But also executes print(\"foo\")",
+			"and print(\"bar\").",
+			"\n"
+		],
+		"body": "(List.app ${1:callback_function} ${0:list})"
+	},
+	"List.foldl": {
+		"prefix": "List.foldl",
+		"description": [
+			"(α * β -> β) -> β -> α list -> β",
+			"\n",
+			"Returns an accumulated value over",
+			"a list by applying the callback",
+			"function starting at the head",
+			"to the element and the accumulator,",
+			"writing the callback return to the",
+			"accumulator and continuing until",
+			"it arrives at the tail.",
+			"\n",
+			"List.foldl (fn (x,y) => x + y) 0 [1, 2, 3]",
+			"=> 6",
+			"\n"
+		],
+		"body": "(List.foldl ${1:callback_function} ${2:accumulator_initial_value} ${0:list})"
+	},
+	"List.foldr": {
+		"prefix": "List.foldr",
+		"description": [
+			"(α * β -> β) -> β -> α list -> β",
+			"\n",
+			"Returns an accumulated value over",
+			"a list by applying the callback",
+			"function starting at the tail",
+			"to the element and the accumulator,",
+			"writing the callback return to the",
+			"accumulator and continuing until",
+			"it arrives at the head.",
+			"\n",
+			"List.foldr (fn (x,y) => x + y) 0 [1, 2, 3]",
+			"=> 6",
+			"\n"
+		],
+		"body": "(List.foldr ${1:callback_function} ${2:accumulator_initial_value} ${0:list})"
+	},
+	"List.hd": {
+		"prefix": "List.hd",
+		"description": [
+			"α list -> α",
+			"\n",
+			"Return the head of the list.",
+			"\n",
+			"List.hd([1, 2, 3]) => 1",
+			"\n"
+		],
+		"body": "List.hd(${0:list})"
+	},
+	"List.length": {
+		"prefix": "List.length",
+		"description": [
+			"α list -> int",
+			"\n",
+			"Returns the number of",
+			"elements in a list.",
+			"\n",
+			"List.length([1,2,3]) => 3",
+			"\n"
+		],
+		"body": "List.length(${0:list})"
+	},
+	"List.map": {
+		"prefix": "List.map",
+		"description": [
+			"(α -> β) -> α list -> β list",
+			"\n",
+			"Applies the callback function",
+			"to the list and returns",
+			"a list of results.",
+			"\n",
+			"fun callback x = x + 1",
+			"List.map callback [1, 2, 3]",
+			"=> [2, 3, 4]",
+			"\n"
+		],
+		"body": "(List.map ${1:callback_function} ${0:label})"
+	},
+	"List.null": {
+		"prefix": "List.null",
+		"description": [
+			"α list -> bool",
+			"\n",
+			"Returns true if the list is empty.",
+			"\n",
+			"List.null([]) => true",
+			"List.null([1, 2, 3]) => false",
+			"\n"
+		],
+		"body": "List.null(${0:list})"
+	},
+	"List.rev": {
+		"prefix": "List.rev",
+		"description": [
+			"α list -> α list",
+			"\n",
+			"Returns a new list with all",
+			"the elements reversed.",
+			"\n",
+			"List.rev([1, 2, 3]) => [3, 2, 1]",
+			"\n"
+		],
+		"body": "List.rev(${0:list})"
+	},
+	"List.tl": {
+		"prefix": "List.tl",
+		"description": [
+			"α list -> α list",
+			"\n",
+			"Returns the tail of the list.",
+			"\n",
+			"List.tl([1, 2, 3]) => [2, 3]",
+			"\n"
+		],
+		"body": "List.tl(${0:list})"
+	}
+}
