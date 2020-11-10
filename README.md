@@ -15,6 +15,7 @@ It is currently still a work in progress, so more features are coming.
 
 * Syntax highlighting for SML
 * Interpreting the contents of an SML file with the SOSML interpreter
+* Helful snippets
 
 Currently you can only open one Interpreter at a time based on the contents of one file. To do so, open up your SML file, press CTRL + SHIFT + P to open up the command bar and type 'sosml interpret'. This should bring up the vscode-sosml.interpret command. You can of course assign this command to a hotkey in the settings.
 Executing this will open up an interpreter result of the contents of the opened SML file to the side, showing you what the code you wrote evaluates to.
@@ -37,6 +38,10 @@ When installing this extension, you should be prompted to also install [vscode-b
 * ~~Comments are not possible as of now and will lead to an evalutation error [#1](https://github.com/bmo-at/vscode-sosml/issues/1)~~ This has been fixed as of Version 1.1.0
 
 ## Release Notes
+
+### 1.2.0
+
+[Changelog](https://github.com/bmo-at/vscode-sosml/blob/master/CHANGELOG.md#120---11102020)
 
 ### 1.1.1
 
