@@ -2,7 +2,7 @@
 	"name": "vscode-sosml",
 	"displayName": "vscode-sosml",
 	"description": "Run SOSML in Visual Studio Code",
-	"version": "1.3.0",
+	"version": "1.3.1",
 	"engines": {
 		"vscode": "^1.50.0"
 	},
@@ -30,7 +30,7 @@
 			{
 				"title": "vscode-sosml",
 				"properties": {
-					"SOSML.preloadedUserFunctions": {
+					"vscode-sosml.preloadedUserFunctions": {
 						"description": "Insert functions to be available to every Interpreter",
 						"type": "string"
 					}

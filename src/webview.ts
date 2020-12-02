@@ -5,6 +5,8 @@ import { getFirstState, interpret, InterpreterOptions, PrintOptions, Errors, Sta
 export class SMLView {
     public static currentView: SMLView | undefined;
 
+    private static _config = vscode.workspace.getConfiguration('vscode-sosml');
+
     private readonly _interpreterOptions: InterpreterOptions = {
         allowSuccessorML: false,
         allowVector: true,
@@ -23,7 +25,6 @@ export class SMLView {
         stopId: this._interpreterState.id + 1
     };
 
-    private static _config = vscode.workspace.getConfiguration('vscode-sosml');
     private _document: vscode.TextDocument;
     private readonly _panel: vscode.WebviewPanel;
     private _disposables: vscode.Disposable[] = [];
