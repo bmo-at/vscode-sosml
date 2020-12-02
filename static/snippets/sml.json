@@ -2,7 +2,7 @@
 	"Anonymous function": {
 		"prefix": "anon_func",
 		"description": "An anonymous function declaration.",
-		"body": "(fn (${1:parameters}) => ${0:function_body})"
+		"body": "(fn (${1:parameters}) => ${2:function_body})${0}"
 	},
 	"Type declaration (function)": {
 		"prefix": "type.function",
@@ -10,7 +10,7 @@
 			"Type declaration of",
 			"a function."
 		],
-		"body": "(${1:function_name}: (${2:input_args}) -> (${0:return_type}))"
+		"body": "(${1:function_name}: (${2:input_args}) -> (${3:return_type}))${0}"
 	},
 	"String.^": {
 		"prefix": "String.^",
@@ -24,7 +24,7 @@
 			"(\"foo\" ^ \"bar\") => \"foobar\"",
 			"\n"
 		],
-		"body": "(${1:first_string} ^ ${0:second_string})"
+		"body": "(${1:first_string} ^ ${2:second_string})${0}"
 	},
 	"String.^.full": {
 		"prefix": "String.^.full",
@@ -38,7 +38,7 @@
 			"(\"foo\" ^ \"bar\") => \"foobar\"",
 			"\n"
 		],
-		"body": "String.^(${1:first_string}, ${0:second_string})"
+		"body": "String.^(${1:first_string}, ${2:second_string})${0}"
 	},
 	"String.concat": {
 		"prefix": "String.concat",
@@ -52,7 +52,7 @@
 			"=> \"foobar\"",
 			"\n"
 		],
-		"body": "String.concat(${0:string_list})"
+		"body": "String.concat(${1:string_list})${0}"
 	},
 	"String.explode": {
 		"prefix": "String.explode",
@@ -67,7 +67,7 @@
 			"=> [#\"f\", #\"o\", #\"o\",  #\"b\", #\"a\", #\"r\",]",
 			"\n"
 		],
-		"body": "String.explode(${0:string})"
+		"body": "String.explode(${1:string})${0}"
 	},
 	"String.implode": {
 		"prefix": "String.implode",
@@ -82,7 +82,7 @@
 			"=> \"foobar\"",
 			"\n"
 		],
-		"body": "String.implode(${0:char_list})"
+		"body": "String.implode(${1:char_list})${0}"
 	},
 	"String.size": {
 		"prefix": "String.size",
@@ -95,7 +95,7 @@
 			"String.size(\"foo bar\") => 7",
 			"\n"
 		],
-		"body": "String.size(${0:string})"
+		"body": "String.size(${1:string})${0}"
 	},
 	"String.str": {
 		"prefix": "String.str",
@@ -109,7 +109,7 @@
 			"String.str(#\"f\") => \"f\"",
 			"\n"
 		],
-		"body": "String.str(${0:char})"
+		"body": "String.str(${1:char})${0}"
 	},
 	"String.substring": {
 		"prefix": "String.substring",
@@ -125,7 +125,7 @@
 			"=> \"str\"",
 			"\n"
 		],
-		"body": "String.substring(${1:string}, ${2:start}, ${0:end})"
+		"body": "String.substring(${1:string}, ${2:start}, ${3:end})${0}"
 	},
 	"Real.ceil": {
 		"prefix": "Real.ceil",
@@ -151,7 +151,7 @@
 			"Real.floor(3.6) => 3",
 			"\n"
 		],
-		"body": "Real.floor(${0:real})"
+		"body": "Real.floor(${1:real})${0}"
 	},
 	"Real.fromInt": {
 		"prefix": "Real.fromInt",
@@ -164,7 +164,7 @@
 			"Real.fromInt(3) => 3.0",
 			"\n"
 		],
-		"body": "Real.fromInt(${0:int})"
+		"body": "Real.fromInt(${1:int})${0}"
 	},
 	"Real.round": {
 		"prefix": "Real.round",
@@ -178,7 +178,7 @@
 			"Real.round(3.51) => 4",
 			"\n"
 		],
-		"body": "Real.round(${0:real})"
+		"body": "Real.round(${1:real})${0}"
 	},
 	"Real.trunc": {
 		"prefix": "Real.trunc",
@@ -192,7 +192,7 @@
 			"Real.round(3.99) => 3",
 			"\n"
 		],
-		"body": "Real.trunc(${0:real})"
+		"body": "Real.trunc(${1:real})${0}"
 	},
 	"Real.div": {
 		"prefix": "Real.div",
@@ -206,7 +206,7 @@
 			"3.0 / 2.0 => 1.5",
 			"\n"
 		],
-		"body": "${1:dividend} / ${0:divisor}"
+		"body": "${1:dividend} / ${2:divisor}${0}"
 	},
 	"List.@": {
 		"prefix": "List.@",
@@ -219,7 +219,7 @@
 			"=> [1, 2, 3, 4, 5, 6]",
 			"\n"
 		],
-		"body": "(${1:first_list} @ ${0:second_list})"
+		"body": "(${1:first_list} @ ${2:second_list})${0}"
 	},
 	"List.@.full": {
 		"prefix": "List.@.full",
@@ -232,7 +232,7 @@
 			"=> [1, 2, 3, 4, 5, 6]",
 			"\n"
 		],
-		"body": "List.@(${1:first_list}, ${0:second_list})"
+		"body": "List.@(${1:first_list}, ${2:second_list})${0}"
 	},
 	"List.app": {
 		"prefix": "List.app",
@@ -249,7 +249,7 @@
 			"and print(\"bar\").",
 			"\n"
 		],
-		"body": "(List.app ${1:callback_function} ${0:list})"
+		"body": "(List.app ${1:callback_function} ${2:list})${0}"
 	},
 	"List.foldl": {
 		"prefix": "List.foldl",
@@ -268,7 +268,7 @@
 			"=> 6",
 			"\n"
 		],
-		"body": "(List.foldl ${1:callback_function} ${2:accumulator_initial_value} ${0:list})"
+		"body": "(List.foldl ${1:callback_function} ${2:accumulator_initial_value} ${3:list})${0}"
 	},
 	"List.foldr": {
 		"prefix": "List.foldr",
@@ -287,7 +287,7 @@
 			"=> 6",
 			"\n"
 		],
-		"body": "(List.foldr ${1:callback_function} ${2:accumulator_initial_value} ${0:list})"
+		"body": "(List.foldr ${1:callback_function} ${2:accumulator_initial_value} ${3:list})${0}"
 	},
 	"List.hd": {
 		"prefix": "List.hd",
@@ -299,7 +299,7 @@
 			"List.hd([1, 2, 3]) => 1",
 			"\n"
 		],
-		"body": "List.hd(${0:list})"
+		"body": "List.hd(${1:list})${0}"
 	},
 	"List.length": {
 		"prefix": "List.length",
@@ -312,7 +312,7 @@
 			"List.length([1,2,3]) => 3",
 			"\n"
 		],
-		"body": "List.length(${0:list})"
+		"body": "List.length(${1:list})${0}"
 	},
 	"List.map": {
 		"prefix": "List.map",
@@ -328,7 +328,7 @@
 			"=> [2, 3, 4]",
 			"\n"
 		],
-		"body": "(List.map ${1:callback_function} ${0:label})"
+		"body": "(List.map ${1:callback_function} ${2:list})${0}"
 	},
 	"List.null": {
 		"prefix": "List.null",
@@ -341,7 +341,7 @@
 			"List.null([1, 2, 3]) => false",
 			"\n"
 		],
-		"body": "List.null(${0:list})"
+		"body": "List.null(${1:list})${0}"
 	},
 	"List.rev": {
 		"prefix": "List.rev",
@@ -354,7 +354,7 @@
 			"List.rev([1, 2, 3]) => [3, 2, 1]",
 			"\n"
 		],
-		"body": "List.rev(${0:list})"
+		"body": "List.rev(${1:list})${0}"
 	},
 	"List.tl": {
 		"prefix": "List.tl",
@@ -366,6 +366,6 @@
 			"List.tl([1, 2, 3]) => [2, 3]",
 			"\n"
 		],
-		"body": "List.tl(${0:list})"
+		"body": "List.tl(${1:list})${0}"
 	}
 }

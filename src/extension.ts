@@ -18,7 +18,11 @@ export function activate(context: vscode.ExtensionContext) {
 		if (SMLView.currentView?.isCurrent(document)) { SMLView.createOrShow(document); }
 	});
 
-	context.subscriptions.push(interpretCommand, onChangeSMLFile);
+	let onChangeConfig = vscode.workspace.onDidChangeConfiguration((configChangeEvent) => {
+		SMLView.configChanged(vscode.workspace.getConfiguration('vscode-sosml'));
+	});
+
+	context.subscriptions.push(interpretCommand, onChangeSMLFile, onChangeConfig);
 }
 
 export function deactivate() { }

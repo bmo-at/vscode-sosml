@@ -15,17 +15,22 @@ export class SMLView {
         allowUnicodeTypeVariables: false,
         allowCommentToken: false
     };
-    private _interpreterState: State = getFirstState(undefined, this._interpreterOptions);
+    private _interpreterState: State = interpret(SMLView._config.preloadedUserFunctions, getFirstState(undefined, this._interpreterOptions), this._interpreterOptions).state;
     private _printOptions: PrintOptions = {
-        boldText: ((text: string) => text.bold()),
-        italicText: ((text: string) => text.italics()),
+        boldText: ((text: string) => `<b>${text}</b>`),
+        italicText: ((text: string) => `<i>${text}</i>`),
         showTypeVariablesAsUnicode: true,
         stopId: this._interpreterState.id + 1
     };
-    
+
+    private static _config = vscode.workspace.getConfiguration('vscode-sosml');
     private _document: vscode.TextDocument;
     private readonly _panel: vscode.WebviewPanel;
     private _disposables: vscode.Disposable[] = [];
+
+    public static configChanged(newConfig: vscode.WorkspaceConfiguration) {
+        SMLView._config = newConfig;
+    }
 
     public static createOrShow(document: vscode.TextDocument) {
 
@@ -71,7 +76,10 @@ export class SMLView {
 
     private _generateHTML(smlCode: string) {
 
-        let smlResult = smlCode.split(';').map((program) => this._evaluateProgram(program + ';'));
+        let smlResult = smlCode
+            .replace(/[\n\r]/g, '\n')
+            .split(';')
+            .map((program) => this._evaluateProgram(program + ';'));
 
         let styleSheet = `<style> code { font-family: monospace; color: black; font-weight: 600; } div { border-radius: 5px; border: 1px solid grey; padding: 3px; margin: 3px; } .div-0 { background-color: deepskyblue; } .div-1 { background-color: lawngreen; } .div-2 { background-color: teal; } .div-3 { background-color: yellowgreen; } .div-4 { background-color: darkviolet; } .div-error { background-color: black; color: crimson;} </style>`;
 
