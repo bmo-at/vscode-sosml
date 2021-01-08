@@ -211,7 +211,14 @@ function _processImports(content: string, path: string) {
     let imports = [root];
     let importPaths = _extractImportPaths(content, path);
     if (importPaths.length > 0) {
-        let contents = importPaths.map((importPath) => fs.readFileSync(importPath).toString());
+        let contents = importPaths.map((importPath) => {
+            try {
+                return fs.readFileSync(importPath).toString();
+            } catch (error) {
+                vscode.window.showErrorMessage(`File ${importPath} not found or inaccessible. Please make sure it exists and you have read access. Full error message: ${error}`)
+                return "";
+            }
+        });
         let zipped = importPaths.map((path, index) => { return { path, content: contents[index] }; });
         let newImports = zipped.map(({ content, path }) => _processDeeperImports(content, path, 1));
         let flattened = ([] as {
