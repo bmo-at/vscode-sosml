@@ -34,7 +34,7 @@ export class SMLView {
         const panel = vscode.window.createWebviewPanel(
             'sosml.interpreterResult',
             `Interpreter Result - ${smlFilename}`,
-            vscode.ViewColumn.Beside,
+            (SMLView._config.interpreterResultLocation === "Beside") ? vscode.ViewColumn.Beside : vscode.ViewColumn.Active,
             { enableScripts: true }
         );
 
@@ -215,7 +215,7 @@ function _processImports(content: string, path: string) {
             try {
                 return fs.readFileSync(importPath).toString();
             } catch (error) {
-                vscode.window.showErrorMessage(`File ${importPath} not found or inaccessible. Please make sure it exists and you have read access. Full error message: ${error}`)
+                vscode.window.showErrorMessage(`File ${importPath} not found or inaccessible. Please make sure it exists and you have read access. Full error message: ${error}`);
                 return "";
             }
         });
