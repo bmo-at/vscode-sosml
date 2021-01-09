@@ -32,8 +32,7 @@ async function createOrUpdate(document: vscode.TextDocument) {
 		if (SMLView.currentView.isCurrent(document)) {
 			SMLView.update(document);
 		} else {
-			vscode.window.showInformationMessage("A different file is currently being interpreted. Switch to interpreting this file?");
-			if (await vscode.window.showQuickPick(["Yes", "No"]) === "Yes") {
+			if (await vscode.window.showQuickPick(["Yes", "No"], { placeHolder: "A different file is currently being interpreted. Switch to interpreting this file?" }) === "Yes") {
 				SMLView.create(document);
 			} else { return; }
 		}
