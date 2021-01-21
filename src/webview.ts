@@ -15,7 +15,7 @@ interface CommentSection {
     end: number
 }
 const removeComments = (original: string) => {
-    const limits = original.matchAll(/\(\*|\*\)/gm);
+    const limits = original.matchAll(/\(\*|\*\)|"/gm);
     const template = {
         level: 0,
         start: 0,
@@ -23,12 +23,16 @@ const removeComments = (original: string) => {
     };
     let current = { ...template };
     const commentofs: CommentSection[] = [];
+    let inQuote = false;
     for (const l of limits) {
-        if (l[0] === "(*" && l.index !== undefined) {
+        if (l[0] === `"` && l.index !== undefined && current.level === 0 && original.substr(l.index - 1, 1) !== `\\`) {
+            inQuote = !inQuote;
+        }
+        if (l[0] === "(*" && l.index !== undefined && !inQuote) {
             current.level += 1;
             if (current.level === 1) { current.start = l.index; };
         }
-        else if (l[0] === "*)" && l.index !== undefined) {
+        else if (l[0] === "*)" && l.index !== undefined && !inQuote) {
             current.level -= 1;
             if (current.level === 0) {
                 current.end = l.index + 2;
