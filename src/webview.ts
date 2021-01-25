@@ -2,9 +2,58 @@ import * as vscode from 'vscode';
 
 import { getFirstState, interpret, InterpreterOptions, PrintOptions, Errors, State } from '@sosml/interpreter';
 import * as fs from 'fs';
-import * as path from 'path';
 import { normalize } from 'path';
 
+declare global {
+    interface String {
+        splitMlCode(): string[];
+    }
+}
+interface CommentSection {
+    level: number,
+    start: number,
+    end: number
+}
+const removeComments = (original: string) => {
+    const limits = original.matchAll(/\(\*|\*\)|"/gm);
+    const template = {
+        level: 0,
+        start: 0,
+        end: 0
+    };
+    let current = { ...template };
+    const commentofs: CommentSection[] = [];
+    let inQuote = false;
+    for (const l of limits) {
+        if (l[0] === `"` && l.index !== undefined && current.level === 0 && original.substr(l.index - 1, 1) !== `\\`) {
+            inQuote = !inQuote;
+        }
+        if (l[0] === "(*" && l.index !== undefined && !inQuote) {
+            current.level += 1;
+            if (current.level === 1) { current.start = l.index; };
+        }
+        else if (l[0] === "*)" && l.index !== undefined && !inQuote) {
+            current.level -= 1;
+            if (current.level === 0) {
+                current.end = l.index + 2;
+                commentofs.unshift(current);
+                current = { ...template };
+            }
+        };
+    }
+    let uncommented = original;
+    for (const cof of commentofs) {
+        const prefix = uncommented.substr(0, cof.start - 1);
+        const suffix = uncommented.substr(cof.end);
+        uncommented = `${prefix}${suffix}`;
+    }
+    return uncommented;
+};
+
+String.prototype.splitMlCode = function () {
+    let original = String(this);
+    return removeComments(original).split(';');
+};
 export class SMLView {
 
     public static currentView: SMLView | undefined;
@@ -101,7 +150,7 @@ export class SMLView {
         let preloadedUserFunctionsOutput = _evaluateProgram(preloadedUserFunctions, interpreter);
 
         let preloadedUserFunctionsHTML = (preloadedUserFunctionsOutput !== "") ? ('<button class=collapsible>Preloaded User Functions</button>' + `<div class=content>${preloadedUserFunctionsOutput
-            .split(';')
+            .splitMlCode()
             .filter(x => x !== '\n')
             .map((x) => { if (!(x.startsWith('There was a problem with your code:'))) { return x + ';'; } else { return x; } })
             .reduce((prev, current) => { return prev + current + '</p>'; }, '<p>')
@@ -115,7 +164,7 @@ export class SMLView {
         let importedCodeOutput = _evaluateProgram(importedCode, interpreter);
 
         let importedCodeHTML = (importedCodeOutput !== "") ? ('<button class=collapsible>Imported Code</button>' + `<div class=content>${importedCodeOutput
-            .split(';')
+            .splitMlCode()
             .filter(x => x !== '\n')
             .map((x) => { if (!(x.startsWith('There was a problem with your code:'))) { return x + ';'; } else { return x; } })
             .reduce((prev, current) => { return prev + current + '</p>'; }, '<p>')
@@ -124,7 +173,7 @@ export class SMLView {
 
         let smlResult = documentText
             .replace(/[\n\r]/g, '\n')
-            .split(';')
+            .splitMlCode()
             .map((program) => _evaluateProgram(program + ';', interpreter));
 
         let styleSheet = `<style> \
@@ -166,7 +215,7 @@ for (i = 0; i < coll.length; i++) {
                     const start = program.startsWith('There was a problem with your code:') ?
                         `<div class="div-error">` : `<div class="div-${index % 5}">`;
                     return start + program
-                        .split(';')
+                        .splitMlCode()
                         .filter(x => x !== '\n')
                         .map((x) => { if (!(x.startsWith('There was a problem with your code:'))) { return x + ';'; } else { return x; } })
                         .reduce((prev, current) => { return prev + current + '</p>'; }, '<p>')
