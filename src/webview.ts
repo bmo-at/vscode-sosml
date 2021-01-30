@@ -50,9 +50,11 @@ const removeComments = (original: string) => {
     return uncommented;
 };
 
+
 String.prototype.splitMlCode = function () {
-    let original = String(this);
-    return removeComments(original).split(';');
+    const original = String(this);
+    const nocomments = removeComments(original);
+    return nocomments.split(/\;[\n\s]*(?=\n[^\s])/gm);
 };
 export class SMLView {
 
@@ -215,7 +217,7 @@ for (i = 0; i < coll.length; i++) {
                     const start = program.startsWith('There was a problem with your code:') ?
                         `<div class="div-error">` : `<div class="div-${index % 5}">`;
                     return start + program
-                        .splitMlCode()
+                        .split(";")
                         .filter(x => x !== '\n')
                         .map((x) => { if (!(x.startsWith('There was a problem with your code:'))) { return x + ';'; } else { return x; } })
                         .reduce((prev, current) => { return prev + current + '</p>'; }, '<p>')
